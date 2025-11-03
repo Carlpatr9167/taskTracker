@@ -1,0 +1,75 @@
+<div class="section left-panel">
+    <div class="left-panel-content top">
+       <h1>Projects</h1>
+       <div class="in-progress">
+        <table>
+          <tr>
+        
+          </tr>
+          <tr>
+            <td>Task Manager</td>          
+            <td><button>Go</button></td>
+          </tr>
+          <tr>
+            <td>Black Coffee</td>          
+            <td><button>Go</button></td>
+          </tr>
+        </table>
+       </div>
+    </div>
+    <div class="left-panel-content center">
+      <h2>Create Task</h2>
+      <div class="submission">
+        <form>
+        <label for="task-name">Task Name:</label><br>
+        <input type="text" id="task-name" name="task-name"><br>
+        <label for="start-time">Start Time:</label><br>
+        <input type="time" id="start-time" name="start-time"><br>
+        <br>
+        <input type="submit" value="Create Task">
+      </div>
+    </div>
+</div>
+<div class="section center-panel">
+  <div class="center-panel-content top">
+  <div class="time">
+    <h1><%= Time.now.strftime("%-I:%M") %></h1>
+  </div>
+  </div>
+  <div class="center-panel-content bottom">
+   <table>
+        <tr>
+          <th>Task</th>
+          <th>Start Time</th>
+          <th>Status</th>
+          <th>End Time</th>
+        </tr>
+        <tr>
+          <td>Design Homepage</td>
+          <td>Nov 10, 2024</td>
+          <td>In Progress</td>
+          <td><button>End</button></td>
+        </tr>
+        <tr>
+          <td>Develop Login Feature</td>
+          <td>Nov 15, 2024</td>
+          <td>In Progress</td>
+          <td><button>End</button></td>
+        </tr>
+        <tr>
+          <td>Test Payment Gateway</td>
+          <td>Nov 20, 2024</td>
+          <td>Pending</td>
+          <td><button>End</button></td>
+        </tr>
+      </table>
+  </div> 
+  </div>
+</div>
+<div class="section right-panel">
+    <div class="cal">
+    <%= month_calendar do |date| %>
+    <%= date.day %>
+    <% end %>
+  </div>
+</div>
