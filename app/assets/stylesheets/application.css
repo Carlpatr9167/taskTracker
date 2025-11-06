@@ -127,13 +127,45 @@ box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0);
 }
 
 .in-progress {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: scroll;
-  width: 100%;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-  min-height: 25vh;
-  margin-top: 10px;
-  padding-top: 10px;
+  overflow: auto; /* Enable scrolling when content overflows */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile devices */
+  height: 30vh; /* Set a fixed height for the container */
+  width: 100%; /* Keep the width of the container */
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  margin-top: 10px; /* Add spacing above the container */
+  padding: 10px; /* Add padding inside the container */
+  border-radius: 8px; /* Slightly round the corners */
+}
+
+.in-progress table {
+  width: 100%; /* Ensure the table takes up the full width */
+  border-collapse: separate; /* Add spacing between table cells */
+  border-spacing: 0 8px; /* Add vertical spacing between rows */
+}
+
+.in-progress th, .in-progress td {
+  padding: 8px 12px; /* Add padding inside table cells */
+  text-align: left; /* Align text to the left */
+  border-radius: 4px; /* Round the corners of table cells */
+}
+
+.in-progress th {
+  font-weight: bold; /* Make table headers bold */
+  text-transform: uppercase; /* Capitalize table headers */
+}
+
+.in-progress td button {
+  padding: 6px 12px; /* Add padding to buttons */
+  font-size: 14px; /* Adjust font size */
+  border: none; /* Remove default borders */
+  border-radius: 4px; /* Round the corners */
+  background-color: rgba(189, 215, 241, 0.8); /* Add a subtle background color */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s ease; /* Add a hover effect */
+}
+
+.in-progress td button:hover {
+  background-color: rgba(189, 215, 241, 1); /* Darken the background on hover */
 }
 
 /* Styling for the Create Project form */
