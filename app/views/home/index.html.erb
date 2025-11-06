@@ -3,31 +3,29 @@
        <h1>Projects</h1>
        <div class="in-progress">
         <table>
+        <% @projects.each do |project| %>
           <tr>
-        
+            <td><%= project.name %></td>
+            <td><button>Open</button></td>
+            <td><button>Delete</button></td>
           </tr>
-          <tr>
-            <td>Task Manager</td>          
-            <td><button>Go</button></td>
-          </tr>
-          <tr>
-            <td>Black Coffee</td>          
-            <td><button>Go</button></td>
-          </tr>
+          <% end %> 
         </table>
        </div>
     </div>
     <div class="left-panel-content center">
-      <h2>Create Task</h2>
+      <h2>Create New</h2>
       <div class="submission">
-        <form>
-        <label for="task-name">Task Name:</label><br>
-        <input type="text" id="task-name" name="task-name"><br>
-        <label for="start-time">Start Time:</label><br>
-        <input type="time" id="start-time" name="start-time"><br>
-        <br>
-        <input type="submit" value="Create Task">
-      </div>
+      <%= form_with url: '/home/create_item', method: :post, class: 'project-form', local: true do |form| %>
+        <%= form.label :name, 'Name:' %><br>
+        <%= form.text_field :name, placeholder: 'Enter name', required: true %><br>
+    
+        <%= form.label :type, 'Type:' %><br>
+        <%= form.select :type, [['Tasks', 'tasks'], ['Projects', 'projects']], {}, class: 'dropdown' %><br>
+    
+        <%= form.submit 'Create New' %>
+      <% end %>
+    </div>
     </div>
 </div>
 <div class="section center-panel">
