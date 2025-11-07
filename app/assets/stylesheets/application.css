@@ -34,9 +34,6 @@ body {
 
 
 }
-div {
-
-}
 html {
   scroll-behavior: smooth;
 }
@@ -166,6 +163,28 @@ box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0);
 
 .in-progress td button:hover {
   background-color: rgba(189, 215, 241, 1); /* Darken the background on hover */
+}
+
+/* Active project styling */
+.active-project {
+  background-color: rgba(189, 215, 241, 0.3) !important;
+  border-radius: 4px;
+}
+
+.favorite-indicator {
+  color: gold;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.open-button {
+  background-color: rgba(76, 175, 80, 0.8) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.open-button:hover {
+  background-color: rgba(76, 175, 80, 1) !important;
 }
 
 /* Styling for the Create Project form */

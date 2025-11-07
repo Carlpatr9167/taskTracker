@@ -71,6 +71,6 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # ngrok
-  #config.hosts << "gloomiest-tabernacular-mittie.ngrok-free.dev"
-  config.hosts << "c36d7bdf2083.ngrok-free.app"
+  config.hosts << "gloomiest-tabernacular-mittie.ngrok-free.dev"
+  #config.hosts << "c36d7bdf2083.ngrok-free.app"
 end

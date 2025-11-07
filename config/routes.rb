@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   root "home#index"
   get 'home', to: 'home#index'
   post 'home/create_item', to: 'home#create_item'
+  post 'home/select_project', to: 'home#select_project'
   patch 'home/edit_task/:id', to: 'home#edit_task', as: 'edit_task'
 end
