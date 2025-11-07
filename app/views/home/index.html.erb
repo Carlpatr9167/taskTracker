@@ -1,33 +1,45 @@
 <div class="section left-panel">
     <div class="left-panel-content top">
        <h1>Projects</h1>
+       <% if @current_project %>
+         <p><strong>Current Project:</strong> <%= @current_project.name %></p>
+       <% end %>
        <div class="in-progress">
         <table>
-          <tr>
-        
+        <% @projects.each do |project| %>
+          <tr class="<%= 'active-project' if @current_project&.id == project.id %>">
+            <td>
+              <%= project.name %>
+              <% if project.favorite? %>
+                <span class="favorite-indicator">⭐</span>
+              <% end %>
+            </td>
+            <td>
+              <%= form_with url: '/home/select_project', method: :post, local: true do |form| %>
+                <%= form.hidden_field :project_id, value: project.id %>
+                <%= form.submit 'Open', class: 'open-button' %>
+              <% end %>
+            </td>
+            <td><button>Delete</button></td>
           </tr>
-          <tr>
-            <td>Task Manager</td>          
-            <td><button>Go</button></td>
-          </tr>
-          <tr>
-            <td>Black Coffee</td>          
-            <td><button>Go</button></td>
-          </tr>
+          <% end %> 
         </table>
        </div>
     </div>
     <div class="left-panel-content center">
-      <h2>Create Task</h2>
+      <h2>Create New</h2>
       <div class="submission">
-        <form>
-        <label for="task-name">Task Name:</label><br>
-        <input type="text" id="task-name" name="task-name"><br>
-        <label for="start-time">Start Time:</label><br>
-        <input type="time" id="start-time" name="start-time"><br>
-        <br>
-        <input type="submit" value="Create Task">
-      </div>
+      <%= form_with url: '/home/create_item', method: :post, class: 'project-form', local: true do |form| %>
+        <%= form.hidden_field :current_project_id, value: @current_project&.id %>
+        <%= form.label :name, 'Name:' %><br>
+        <%= form.text_field :name, placeholder: 'Enter name', required: true %><br>
+    
+        <%= form.label :type, 'Type:' %><br>
+        <%= form.select :type, [['Tasks', 'tasks'], ['Projects', 'projects']], {}, class: 'dropdown' %><br>
+    
+        <%= form.submit 'Create New' %>
+      <% end %>
+    </div>
     </div>
 </div>
 <div class="section center-panel">
@@ -37,6 +49,11 @@
   </div>
   </div>
   <div class="center-panel-content bottom">
+   <% if @current_project %>
+     <h2>Tasks for: <%= @current_project.name %></h2>
+   <% else %>
+     <h2>No project selected</h2>
+   <% end %>
    <table>
         <tr>
           <th>Task</th>
@@ -44,24 +61,18 @@
           <th>Status</th>
           <th>End Time</th>
         </tr>
-        <tr>
-          <td>Design Homepage</td>
-          <td>Nov 10, 2024</td>
-          <td>In Progress</td>
-          <td><button>End</button></td>
-        </tr>
-        <tr>
-          <td>Develop Login Feature</td>
-          <td>Nov 15, 2024</td>
-          <td>In Progress</td>
-          <td><button>End</button></td>
-        </tr>
-        <tr>
-          <td>Test Payment Gateway</td>
-          <td>Nov 20, 2024</td>
-          <td>Pending</td>
-          <td><button>End</button></td>
-        </tr>
+        <% @tasks.each do |task| %>
+          <tr>
+            <td><%= task.name %></td>
+            <td><%= task.start_time %></td>
+            <td>status</td>
+            <% if task.end_time %>
+            <td><%= task.end_time %></td>
+            <% else %>
+            <td><%= button_to 'Mark Complete', edit_task_path(task.id), method: :patch, class: 'mark-complete-button' %></td>
+            <% end %>
+          </tr>
+          <% end %> 
       </table>
   </div> 
   </div>
