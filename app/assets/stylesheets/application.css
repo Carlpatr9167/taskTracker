@@ -1,359 +1,757 @@
-/* CSS Reset */
-/* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+
+:root {
+  --color-bg-deep: #0a2f4a;
+  --color-bg-mid: #0f4c75;
+  --color-surface: rgba(255, 255, 255, 0.12);
+  --color-surface-strong: rgba(255, 255, 255, 0.18);
+  --color-surface-hover: rgba(255, 255, 255, 0.24);
+  --color-border: rgba(255, 255, 255, 0.22);
+  --color-text: #f4f8fc;
+  --color-text-muted: #c8d9e8;
+  --color-primary: #2dd4bf;
+  --color-primary-hover: #5eead4;
+  --color-primary-text: #042f2e;
+  --color-secondary: #7dd3fc;
+  --color-secondary-hover: #bae6fd;
+  --color-success: #4ade80;
+  --color-success-hover: #86efac;
+  --color-success-text: #052e16;
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #78350f;
+  --color-error-bg: #fee2e2;
+  --color-error-text: #7f1d1d;
+  --color-focus: #fbbf24;
+
+  --font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --header-height: auto;
+  --tap-target: 2.75rem;
+  --transition: 180ms ease;
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-/* 2. Remove default margin */
 * {
   margin: 0;
-  font-family: "Momo Trust Display", sans-serif;
-  font-weight: 100;
-  font-style: normal;
-  color: rgb(255 255 255 / 70%);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.35);
 }
 
-/* 3. Enable keyword animations */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-}
-
-body {
-  /* 4. Add accessible line-height */
-  line-height: 1.5;
-  /* 5. Improve text rendering */
-  -webkit-font-smoothing: antialiased;
-  display: grid;
-  grid-template-columns: 25% 50% 25%;
-  
-  background-image:url("background_water.jpg");
-  background-size: cover;
-
-
-}
 html {
   scroll-behavior: smooth;
 }
 
-/* 6. Improve media defaults */
-img, picture, video, canvas, svg {
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg-deep);
+  background-image:
+    linear-gradient(160deg, rgba(10, 47, 74, 0.88), rgba(15, 76, 117, 0.78)),
+    url("background_water.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-/* 7. Inherit fonts for form controls */
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
+  color: inherit;
 }
 
-/* 8. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
-/* 9. Improve line wrapping */
 p {
   text-wrap: pretty;
 }
-h1, h2, h3, h4, h5, h6 {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-wrap: balance;
+  line-height: 1.25;
 }
 
-/*
-  10. Create a root stacking context
-*/
-#root, #__next {
-  isolation: isolate;
+a {
+  color: var(--color-secondary);
 }
 
-/* Section Styles*/
-
-.left-panel-content,
-.center-panel-content,
-.right-panel-content {
-  min-width: 0;
-  background-color:rgba(189, 215, 241, 0);
+a:hover {
+  color: var(--color-secondary-hover);
 }
 
-.section {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
-.left-panel {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    place-items: center;
-    button, input {
-    background-color: rgba(189, 215, 241, 0);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-  };
-}
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
 
-.left-panel-content {
-margin-top: 10px;
-margin-bottom: 10px;
-padding-top: 10px;
-height: 80%;
-width: 90%;
-display: flex;
-flex-direction: column;
-align-items: center;
-border-radius: 10px;
-box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0);
-}
-
-.left-panel-content.top {
-  min-height: 30vh;
-  padding: 5px;
-  box-sizing: border-box;
-  height: auto;
-  overflow: auto;
-}
-
-.in-progress {
-  overflow: auto; /* Enable scrolling when content overflows */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile devices */
-  height: 30vh; /* Set a fixed height for the container */
-  width: 100%; /* Keep the width of the container */
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-  margin-top: 10px; /* Add spacing above the container */
-  padding: 10px; /* Add padding inside the container */
-  border-radius: 8px; /* Slightly round the corners */
-}
-
-.in-progress table {
-  width: 100%; /* Ensure the table takes up the full width */
-  border-collapse: separate; /* Add spacing between table cells */
-  border-spacing: 0 8px; /* Add vertical spacing between rows */
-}
-
-.in-progress th, .in-progress td {
-  padding: 8px 12px; /* Add padding inside table cells */
-  text-align: left; /* Align text to the left */
-  border-radius: 4px; /* Round the corners of table cells */
-}
-
-.in-progress th {
-  font-weight: bold; /* Make table headers bold */
-  text-transform: uppercase; /* Capitalize table headers */
-}
-
-.in-progress td button {
-  padding: 6px 12px; /* Add padding to buttons */
-  font-size: 14px; /* Adjust font size */
-  border: none; /* Remove default borders */
-  border-radius: 4px; /* Round the corners */
-  background-color: rgba(189, 215, 241, 0.8); /* Add a subtle background color */
-  cursor: pointer; /* Change cursor to pointer */
-  transition: background-color 0.3s ease; /* Add a hover effect */
-}
-
-.in-progress td button:hover {
-  background-color: rgba(189, 215, 241, 1); /* Darken the background on hover */
-}
-
-/* Active project styling */
-.active-project {
-  background-color: rgba(189, 215, 241, 0.3) !important;
-  border-radius: 4px;
-}
-
-.favorite-indicator {
-  color: gold;
-  font-size: 16px;
-  margin-left: 5px;
-}
-
-.open-button {
-  background-color: rgba(76, 175, 80, 0.8) !important;
-  color: white !important;
-  font-weight: bold;
-}
-
-.open-button:hover {
-  background-color: rgba(76, 175, 80, 1) !important;
-}
-
-/* Styling for the Create Project form */
-.project-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.project-form input[type="text"] {
-  width: 90%;
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-.project-form input[type="submit"] {
-  background-color: rgba(189, 215, 241, 0.8);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.project-form input[type="submit"]:hover {
-  background-color: rgba(189, 215, 241, 1);
-}
-
-/* Styling for the dropdown in the form */
-.project-form .dropdown {
-  width: 90%;
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-}
-
-table {
-  width: 100%;
-  height: auto;
-  border-collapse: collapse;
-  table-layout: fixed;
-  text-align: center;
-  
-}
-
-th, td {
-  padding: 0.25rem 0.5rem;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--color-text);
+  color: var(--color-bg-deep);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--transition);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Flash messages
+   ========================================================================== */
+
+.flash-region {
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  left: var(--space-md);
+  z-index: 90;
+  display: grid;
+  gap: var(--space-xs);
+  max-width: 28rem;
+  margin-left: auto;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.flash-region--dismissed {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  pointer-events: none;
+}
+
+.flash {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+}
+
+.flash--notice {
+  background: #dcfce7;
+  color: #14532d;
+  border: 1px solid #86efac;
+}
+
+.flash--alert {
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid #fca5a5;
+}
+
+/* ==========================================================================
+   App shell
+   ========================================================================== */
+
+.app {
+  width: min(100%, 90rem);
+  margin: 0 auto;
+  padding: var(--space-md);
+  padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom));
+}
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-md);
+}
+
+.app-header__eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.app-header__title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+}
+
+.app-header__clock {
+  text-align: right;
+}
+
+.app-header__clock-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.app-header__time {
+  display: block;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Layout grid
+   ========================================================================== */
+
+.app-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.app-panel {
+  display: grid;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+@media (max-width: 1023px) {
+  .app-panel--tasks {
+    order: -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-grid {
+    grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr) minmax(14rem, 18rem);
+    align-items: start;
+  }
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+.card {
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-md);
+}
+
+.card--main {
+  min-height: 20rem;
+}
+
+.card__header {
+  margin-bottom: var(--space-lg);
+}
+
+.card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.card__subtitle {
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.empty-state {
+  padding: var(--space-lg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Project selector
+   ========================================================================== */
+
+.project-select-form {
+  margin-bottom: var(--space-md);
+}
+
+.project-select {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.project-select:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.project-select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.35);
+}
+
+.project-select option {
+  color: #111827;
+  background: #fff;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-lg) 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.create-form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.form-field {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.form-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.form-field input[type="text"],
+.create-form__select {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-text);
+}
+
+.form-field input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.form-field input[type="text"]:hover,
+.create-form__select:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.form-field input[type="text"]:focus,
+.create-form__select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.35);
+}
+
+.create-form__select option {
+  color: #111827;
+  background: #fff;
+}
+
+.inline-form {
+  display: inline;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target);
+  padding: 0.625rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--sm {
+  min-height: 2.25rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--secondary {
+  background: var(--color-secondary);
+  color: #0c4a6e;
+}
+
+.btn--secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.btn--success {
+  background: var(--color-success);
+  color: var(--color-success-text);
+}
+
+.btn--success:hover {
+  background: var(--color-success-hover);
+}
+
+/* ==========================================================================
+   Task table
+   ========================================================================== */
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.task-table th,
+.task-table td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.task-table th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.task-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.task-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
-.subsection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.status-badge--active {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.45);
 }
 
-.center-panel {
-    height: 100%;
-    display: grid;
-    place-items: center;
-    gap: 10px
+.status-badge--complete {
+  background: rgba(74, 222, 128, 0.18);
+  color: #bbf7d0;
+  border: 1px solid rgba(74, 222, 128, 0.4);
 }
 
-.center-panel > * {
-  min-height: 0;
-}
-
-
-  
-  button {
-    background-color: rgba(189, 215, 241, 0);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+/* Card-style rows on small screens */
+@media (max-width: 640px) {
+  .task-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-.center-panel-content.top{
-  height: auto;
-  overflow: hidden;
-  padding: 0.5rem;
-  box-sizing: border-box;
-}
+  .task-table,
+  .task-table tbody,
+  .task-table tr,
+  .task-table td {
+    display: block;
+    width: 100%;
+  }
 
+  .task-table tr {
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
 
+  .task-table tr:last-child {
+    border-bottom: none;
+  }
 
-.center-panel-content.bottom{
-  gap: 10px;
-  place-items: center;
-  overflow: auto;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  align-self: start;
-}
-
-.time {
-    font-size: 75px;
-   
-}
-
-.task-project-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.task-project-toggle button {
-    padding: 8px 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    height: 50px;
-    width: 100px;
-}
-
-.right-panel {
+  .task-table td {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    place-items: center;
+    grid-template-columns: 6.5rem 1fr;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+    border-bottom: none;
+  }
 
+  .task-table td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
 
+  .task-table td[data-label="Completed"] {
+    padding-top: var(--space-sm);
+  }
 }
 
-.right-panel .cal .calendar-title,
-.right-panel .cal nav {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 5px;
+/* ==========================================================================
+   Calendar (simple_calendar gem)
+   ========================================================================== */
 
-
-}
-.cal {
-  background-color: rgba(189, 215, 241, 0.1);
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+.calendar-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Mobile Styles */
-@media (max-width: 768px) {
-    body {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, auto);
-    }
-
-    .section {
-        height: 100vh;
-        width: 100%;
-    }
+.simple-calendar {
+  width: 100%;
+  min-width: 16rem;
 }
 
-@media (max-width: 420px) {
-  th, td {
-    white-space: normal;
-    word-break: break-word;
+.simple-calendar .calendar-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.simple-calendar .calendar-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.simple-calendar table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.simple-calendar th {
+  padding: var(--space-xs);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.simple-calendar td {
+  padding: var(--space-xs);
+  text-align: center;
+  vertical-align: middle;
+  border-radius: var(--radius-sm);
+}
+
+.simple-calendar .day {
+  min-height: 2.25rem;
+}
+
+.simple-calendar .day:hover {
+  background: var(--color-surface-hover);
+}
+
+.simple-calendar .today {
+  background: rgba(45, 212, 191, 0.22);
+  outline: 1px solid var(--color-primary);
+  font-weight: 700;
+}
+
+.simple-calendar .prev-month,
+.simple-calendar .next-month {
+  opacity: 0.45;
+}
+
+.simple-calendar .has-events {
+  font-weight: 600;
+}
+
+.simple-calendar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.simple-calendar a:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.calendar-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   Small-screen polish
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .app {
+    padding: var(--space-sm);
+  }
+
+  .app-header {
+    padding: var(--space-md);
+  }
+
+  .app-header__clock {
+    width: 100%;
+    text-align: left;
+  }
+
+  .card {
+    padding: var(--space-md);
+  }
+
+  .flash-region {
+    top: var(--space-sm);
+    right: var(--space-sm);
+    left: var(--space-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  .app {
+    padding: var(--space-lg);
   }
 }
