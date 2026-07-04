@@ -1,86 +1,158 @@
-<div class="section left-panel">
-    <div class="left-panel-content top">
-       <h1>Projects</h1>
-       <% if @current_project %>
-         <p><strong>Current Project:</strong> <%= @current_project.name %></p>
-       <% end %>
-       <div class="in-progress">
-        <table>
-        <% @projects.each do |project| %>
-          <tr class="<%= 'active-project' if @current_project&.id == project.id %>">
-            <td>
-              <%= project.name %>
-              <% if project.favorite? %>
-                <span class="favorite-indicator">⭐</span>
-              <% end %>
-            </td>
-            <td>
-              <%= form_with url: '/home/select_project', method: :post, local: true do |form| %>
-                <%= form.hidden_field :project_id, value: project.id %>
-                <%= form.submit 'Open', class: 'open-button' %>
-              <% end %>
-            </td>
-            <td><button>Delete</button></td>
-          </tr>
-          <% end %> 
-        </table>
-       </div>
+<div class="app">
+  <header class="app-header">
+    <div class="app-header__brand">
+      <p class="app-header__eyebrow">Task Tracker</p>
+      <h1 class="app-header__title">
+        <% if @current_project %>
+          <%= @current_project.name %>
+        <% else %>
+          No project selected
+        <% end %>
+      </h1>
     </div>
-    <div class="left-panel-content center">
-      <h2>Create New</h2>
-      <div class="submission">
-      <%= form_with url: '/home/create_item', method: :post, class: 'project-form', local: true do |form| %>
-        <%= form.hidden_field :current_project_id, value: @current_project&.id %>
-        <%= form.label :name, 'Name:' %><br>
-        <%= form.text_field :name, placeholder: 'Enter name', required: true %><br>
-    
-        <%= form.label :type, 'Type:' %><br>
-        <%= form.select :type, [['Tasks', 'tasks'], ['Projects', 'projects']], {}, class: 'dropdown' %><br>
-    
-        <%= form.submit 'Create New' %>
-      <% end %>
+
+    <div class="app-header__clock" data-controller="clock">
+      <p class="app-header__clock-label" id="current-time-label">Current time</p>
+      <time
+        class="app-header__time"
+        data-clock-target="display"
+        aria-labelledby="current-time-label"
+      ></time>
     </div>
-    </div>
-</div>
-<div class="section center-panel">
-  <div class="center-panel-content top">
-  <div class="time">
-    <h1><%= Time.now.strftime("%-I:%M") %></h1>
-  </div>
-  </div>
-  <div class="center-panel-content bottom">
-   <% if @current_project %>
-     <h2>Tasks for: <%= @current_project.name %></h2>
-   <% else %>
-     <h2>No project selected</h2>
-   <% end %>
-   <table>
-        <tr>
-          <th>Task</th>
-          <th>Start Time</th>
-          <th>Status</th>
-          <th>End Time</th>
-        </tr>
-        <% @tasks.each do |task| %>
-          <tr>
-            <td><%= task.name %></td>
-            <td><%= task.start_time %></td>
-            <td>status</td>
-            <% if task.end_time %>
-            <td><%= task.end_time %></td>
+  </header>
+
+  <div class="app-grid">
+    <aside class="app-panel app-panel--projects" aria-label="Project workspace">
+      <section class="card" aria-labelledby="workspace-heading">
+        <div class="card__header">
+          <h2 class="card__title" id="workspace-heading">Project</h2>
+          <p class="card__subtitle">Choose a project to focus on, or create something new.</p>
+        </div>
+
+        <% if @projects.any? %>
+          <%= form_with url: home_select_project_path, method: :post, local: true, class: "project-select-form" do |form| %>
+            <div class="form-field">
+              <%= form.label :project_id, "Focus on" %>
+              <%= form.select :project_id,
+                options_for_select(project_options_for_select(@projects), @current_project&.id),
+                {},
+                class: "project-select",
+                aria: { label: "Select project to focus on" },
+                onchange: "this.form.requestSubmit()" %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="empty-state">No projects yet. Create one below to get started.</p>
+        <% end %>
+
+        <hr class="card-divider">
+
+        <%= form_with url: home_create_item_path, method: :post, class: "create-form", local: true do |form| %>
+          <%= form.hidden_field :current_project_id, value: @current_project&.id %>
+
+          <div class="form-field">
+            <%= form.label :name, "Name" %>
+            <%= form.text_field :name,
+              placeholder: "Enter a name",
+              required: true,
+              autocomplete: "off",
+              aria: { required: "true" } %>
+          </div>
+
+          <div class="form-field">
+            <%= form.label :type, "Type" %>
+            <%= form.select :type,
+              [["Task", "tasks"], ["Project", "projects"]],
+              {},
+              class: "create-form__select" %>
+          </div>
+
+          <%= form.submit "Create", class: "btn btn--secondary btn--full" %>
+        <% end %>
+      </section>
+    </aside>
+
+    <main class="app-panel app-panel--tasks" id="main-content">
+      <section class="card card--main" aria-labelledby="tasks-heading">
+        <div class="card__header">
+          <h2 class="card__title" id="tasks-heading">
+            <% if @current_project %>
+              Tasks for <%= @current_project.name %>
             <% else %>
-            <td><%= button_to 'Mark Complete', edit_task_path(task.id), method: :patch, class: 'mark-complete-button' %></td>
+              Tasks
             <% end %>
-          </tr>
-          <% end %> 
-      </table>
-  </div> 
-  </div>
-</div>
-<div class="section right-panel">
-    <div class="cal">
-    <%= month_calendar do |date| %>
-    <%= date.day %>
-    <% end %>
+          </h2>
+          <% unless @current_project %>
+            <p class="card__subtitle">Select or create a project to view and add tasks.</p>
+          <% end %>
+        </div>
+
+        <% if @current_project && @tasks.any? %>
+          <div class="table-scroll">
+            <table class="task-table">
+              <caption class="visually-hidden">
+                Task list for <%= @current_project.name %>
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Task</th>
+                  <th scope="col">Started</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @tasks.each do |task| %>
+                  <tr>
+                    <td data-label="Task"><%= task.name %></td>
+                    <td data-label="Started">
+                      <time datetime="<%= task.start_time&.iso8601 %>">
+                        <%= format_task_time(task.start_time) %>
+                      </time>
+                    </td>
+                    <td data-label="Status">
+                      <span class="<%= task_status_class(task) %>">
+                        <%= task_status(task) %>
+                      </span>
+                    </td>
+                    <td data-label="Completed">
+                      <% if task.end_time %>
+                        <time datetime="<%= task.end_time.iso8601 %>">
+                          <%= format_task_time(task.end_time) %>
+                        </time>
+                      <% else %>
+                        <%= button_to "Mark complete",
+                          edit_task_path(task.id),
+                          method: :patch,
+                          class: "btn btn--success btn--sm",
+                          form: { class: "inline-form" },
+                          aria: { label: "Mark #{task.name} complete" } %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% elsif @current_project %>
+          <p class="empty-state">No tasks yet. Create one using the form in the Project panel.</p>
+        <% end %>
+      </section>
+    </main>
+
+    <aside class="app-panel app-panel--calendar" aria-label="Calendar">
+      <section class="card" aria-labelledby="calendar-heading">
+        <div class="card__header">
+          <h2 class="card__title" id="calendar-heading">Calendar</h2>
+          <p class="card__subtitle">Browse dates at a glance.</p>
+        </div>
+
+        <div class="calendar-wrap">
+          <%= month_calendar do |date| %>
+            <span class="calendar-day"><%= date.day %></span>
+          <% end %>
+        </div>
+      </section>
+    </aside>
   </div>
 </div>

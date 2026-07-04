@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   get 'home', to: 'home#index'
-  post 'home/create_item', to: 'home#create_item'
-  post 'home/select_project', to: 'home#select_project'
+  post "home/create_item", to: "home#create_item", as: :home_create_item
+  post "home/select_project", to: "home#select_project", as: :home_select_project
   patch 'home/edit_task/:id', to: 'home#edit_task', as: 'edit_task'
 end
